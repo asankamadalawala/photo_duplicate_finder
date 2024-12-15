@@ -7,5 +7,6 @@ Use libraries like Pillow for image handling and imagehash for perceptual hashin
 Install required libraries:
 
 `pip install pillow imagehash`
+`pip install pillow-heif`
 
 ## feel free to modify the use the code
