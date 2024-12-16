@@ -19,22 +19,26 @@ def find_and_delete_duplicates(directory):
     for root, _, files in os.walk(directory):
         for file in files:
             file_path = os.path.join(root, file)
-            try:
-                with Image.open(file_path) as img:
-                    # Generate perceptual hash
-                    img_hash = imagehash.phash(img)
+            if not file.endswith((".mp4", ".mov", ".MOV", ".MP4")):
+                try:
+                    with Image.open(file_path) as img:
+                        # Generate perceptual hash
+                        img_hash = imagehash.phash(img)
 
-                # Check for duplicates
-                if img_hash in hash_dict:
-                    # If hash exists, mark this file as a duplicate
-                    duplicates.append(file_path)
-                    print("+",end="")
-                else:
-                    # Otherwise, add the hash and file path to the dictionary
-                    hash_dict[img_hash] = file_path
-                    print(".",end="")
-            except Exception as e:
-                print(f"Error processing {file_path}: {e}")
+                    # Check for duplicates
+                    if img_hash in hash_dict:
+                        # If hash exists, mark this file as a duplicate
+                        duplicates.append(file_path)
+                        print("+ ",file_path)
+                    else:
+                        # Otherwise, add the hash and file path to the dictionary
+                        hash_dict[img_hash] = file_path
+                        print(". ",file_path)
+                except Exception as e:
+                    print(f"Error processing {file_path}: {e}")
+            else:
+                print("* ",file_path)
+
 
     # Delete duplicate files
     for duplicate_file in duplicates:
@@ -47,7 +51,7 @@ def find_and_delete_duplicates(directory):
     print(f"Total duplicates found and deleted: {len(duplicates)}")
 
 def main():
-    directory = r"D:\Images"  # Replace with your directory path
+    directory = r"\\NAS\photo\PhotoLibrary"  # Replace with your directory path
     find_and_delete_duplicates(directory)
 
 if __name__ == "__main__":
